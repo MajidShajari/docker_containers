@@ -96,7 +96,6 @@ services:
 networks:
     npm_net:
         name: npm_net
-        external: true
     loki_net:
         name: loki_net
         internal: true

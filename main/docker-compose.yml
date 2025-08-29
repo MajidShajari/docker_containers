@@ -1,0 +1,114 @@
+version: '3.9'
+
+services:
+    # ---------------- NGINX Proxy Manager ----------------
+    npm:
+        image: jc21/nginx-proxy-manager:2.12.6
+        container_name: NginxProxyManager
+        restart: always
+        ports:
+            - '80:80'
+            - '443:443'
+            - '81:81'
+        environment:
+            DB_POSTGRES_HOST: npm_db
+            DB_POSTGRES_PORT: 5432
+            DB_POSTGRES_USER: ${NPM_DB_USER}
+            DB_POSTGRES_PASSWORD: ${NPM_DB_PASSWORD}
+            DB_POSTGRES_NAME: ${NPM_DB_NAME}
+        volumes:
+            - npm_data:/data
+            - npm_letsencrypt:/etc/letsencrypt
+        depends_on:
+            npm_db:
+                condition: service_healthy
+        networks:
+            - npm_net
+
+    npm_db:
+        image: postgres:16
+        container_name: NPM_PostgreSQL
+        restart: always
+        environment:
+            POSTGRES_USER: ${NPM_DB_USER}
+            POSTGRES_PASSWORD: ${NPM_DB_PASSWORD}
+            POSTGRES_DB: ${NPM_DB_NAME}
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -d ${NPM_DB_NAME} -U ${NPM_DB_USER}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        volumes:
+            - npm_db_data:/var/lib/postgresql/data
+        networks:
+            - npm_net
+    # ---------------- Portainer ----------------
+    portainer:
+        image: portainer/portainer-ce:2.33.0
+        container_name: Portainer
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - portainer_data:/data
+        expose:
+            - '9000'
+        networks:
+            - npm_net
+
+    # ---------------- Grafana ----------------
+    grafana:
+        image: grafana/grafana:11.2.0
+        container_name: Grafana
+        restart: unless-stopped
+        user: '1000'
+        networks:
+            - npm_net
+            - loki
+        volumes:
+            - ./grafana:/var/lib/grafana
+        expose:
+            - '3000'
+
+    # ---------------- Loki ----------------
+    loki:
+        image: grafana/loki:3.1.1
+        container_name: Loki
+        restart: unless-stopped
+        volumes:
+            - ./loki:/etc/loki
+        expose:
+            - '3100'
+        command: -config.file=/etc/loki/loki-config.yml
+        networks:
+            - loki
+
+    # ---------------- Promtail ----------------
+    promtail:
+        image: grafana/promtail:3.1.1
+        container_name: Promtail
+        restart: unless-stopped
+        volumes:
+            - /var/log:/var/log
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./promtail:/etc/promtail
+        command: -config.file=/etc/promtail/promtail-config.yml
+        networks:
+            - loki
+
+networks:
+    npm_net:
+        name: npm_net
+        external: true
+    loki_net:
+        name: loki_net
+        internal: true
+
+volumes:
+    npm_data:
+        name: npm_data
+    npm_letsencrypt:
+        name: npm_letsencrypt
+    npm_db_data:
+        name: npm_db_data
+    portainer_data:
+        name: portainer_data

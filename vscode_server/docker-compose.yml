@@ -15,3 +15,10 @@ services:
             - '8443'
         networks:
             - npm_net
+volumes:
+    vscode_data:
+        name: vscode_data
+networks:
+    npm_net:
+        name: npm_net
+        external: true

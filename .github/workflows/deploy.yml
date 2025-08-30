@@ -51,7 +51,7 @@ jobs:
                   set -e
                   cd ~/docker_containers/main
                   git reset --hard
-                  git pull origin master
+                  git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
                   docker compose up -d --remove-orphans
@@ -77,7 +77,7 @@ jobs:
                   set -e
                   cd ~/docker_containers/database
                   git reset --hard
-                  git pull origin master
+                  git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
                   docker compose up -d --remove-orphans
@@ -103,7 +103,7 @@ jobs:
                   set -e
                   cd ~/docker_containers/vscode_server
                   git reset --hard
-                  git pull origin master
+                  git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
                   docker compose up -d --remove-orphans
@@ -129,7 +129,7 @@ jobs:
                   set -e
                   cd ~/docker_containers/n8n
                   git reset --hard
-                  git pull origin master
+                  git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
 

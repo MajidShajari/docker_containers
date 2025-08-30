@@ -59,11 +59,13 @@ services:
         container_name: Grafana
         restart: unless-stopped
         user: '1000'
+        environment:
+            - GF_SERVER_ROOT_URL=https://grafana.${DOMAIN_NAME}
         networks:
             - npm_net
             - loki_net
         volumes:
-            - ./grafana:/var/lib/grafana
+            - grafana_data:/var/lib/grafana
         expose:
             - '3000'
 
@@ -109,3 +111,5 @@ volumes:
         name: npm_db_data
     portainer_data:
         name: portainer_data
+    grafana_data:
+        name: grafana_data

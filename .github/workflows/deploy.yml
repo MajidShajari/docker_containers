@@ -8,7 +8,7 @@ on:
 
 jobs:
     deploy-main:
-        # if: contains(github.event.head_commit.message, 'main') || github.event_name == 'workflow_dispatch'
+        if: contains(github.event.head_commit.message, 'main') || github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
                   EOF
 
     deploy-database:
-        # if: contains(github.event.head_commit.message, 'database') || github.event_name == 'workflow_dispatch'
+        if: contains(github.event.head_commit.message, 'database') || github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -57,7 +57,7 @@ jobs:
                   docker image prune -f
                   EOF
     deploy-vscode:
-        # if: contains(github.event.head_commit.message, 'vscode_server') || github.event_name == 'workflow_dispatch'
+        if: contains(github.event.head_commit.message, 'vscode_server') || github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -81,7 +81,7 @@ jobs:
                   docker image prune -f
                   EOF
     deploy-n8n:
-        # if: contains(github.event.head_commit.message, 'n8n') || github.event_name == 'workflow_dispatch'
+        if: contains(github.event.head_commit.message, 'n8n') || github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code

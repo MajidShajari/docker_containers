@@ -111,32 +111,32 @@ jobs:
                   EOF
 
     deploy-n8n:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.n8n_changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+        needs: detect-changes
+        if: needs.detect-changes.outputs.n8n_changed == 'true'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-        - name: Set up SSH
-          uses: webfactory/ssh-agent@v0.9.0
-          with:
-              ssh-private-key: ${{ secrets.SSH_KEY }}
+            - name: Set up SSH
+              uses: webfactory/ssh-agent@v0.9.0
+              with:
+                  ssh-private-key: ${{ secrets.SSH_KEY }}
 
-        - name: Deploy n8n container
-          run: |
-              ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-              set -e
-              cd ~/docker_containers/n8n
-              git reset --hard
-              git pull origin master
-              docker compose pull
-              docker compose down
+            - name: Deploy n8n container
+              run: |
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+                  set -e
+                  cd ~/docker_containers/n8n
+                  git reset --hard
+                  git pull origin master
+                  docker compose pull
+                  docker compose down
 
-              # Delay to ensure PostgreSQL is ready
-              echo "Waiting 15 seconds for database to be ready..."
-              sleep 15
+                  # Delay to ensure PostgreSQL is ready
+                  echo "Waiting 15 seconds for database to be ready..."
+                  sleep 15
 
-              docker compose up -d --remove-orphans
-              docker system prune -af
-              EOF
+                  docker compose up -d --remove-orphans
+                  docker system prune -af
+                  EOF

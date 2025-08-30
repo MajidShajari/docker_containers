@@ -1,4 +1,4 @@
-auth_enabled: false # برای تست
+auth_enabled: false # for testing only
 
 server:
     http_listen_port: 3100
@@ -30,7 +30,7 @@ ruler:
     alertmanager_url: http://loki_net:9093
 
 limits_config:
-    retention_period: 720h # 30 روز
+    retention_period: 720h # 30 days
     max_streams_per_user: 5000
 
 ingester:

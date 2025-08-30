@@ -10,10 +10,10 @@ jobs:
     detect-changes:
         runs-on: ubuntu-latest
         outputs:
-            main_changed: ${{ steps.changes.outputs.main }}
-            database_changed: ${{ steps.changes.outputs.database }}
-            vscode_changed: ${{ steps.changes.outputs.vscode }}
-            n8n_changed: ${{ steps.changes.outputs.n8n }}
+            main: ${{ steps.changes.outputs.main }}
+            database: ${{ steps.changes.outputs.database }}
+            vscode: ${{ steps.changes.outputs.vscode }}
+            n8n: ${{ steps.changes.outputs.n8n }}
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
 
     deploy-main:
         needs: detect-changes
-        if: needs.detect-changes.outputs.main_changed == 'true'
+        if: needs.detect-changes.outputs.main == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -60,7 +60,7 @@ jobs:
 
     deploy-database:
         needs: detect-changes
-        if: needs.detect-changes.outputs.database_changed == 'true'
+        if: needs.detect-changes.outputs.database == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -86,7 +86,7 @@ jobs:
 
     deploy-vscode:
         needs: detect-changes
-        if: needs.detect-changes.outputs.vscode_changed == 'true'
+        if: needs.detect-changes.outputs.vscode == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -112,7 +112,7 @@ jobs:
 
     deploy-n8n:
         needs: detect-changes
-        if: needs.detect-changes.outputs.n8n_changed == 'true'
+        if: needs.detect-changes.outputs.n8n == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code

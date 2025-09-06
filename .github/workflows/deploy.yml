@@ -27,8 +27,6 @@ jobs:
                           - 'main/**'
                       database:
                           - 'database/**'
-                      vscode:
-                          - 'vscode_server/**'
                       n8n:
                           - 'n8n/**'
 

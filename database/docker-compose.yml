@@ -72,7 +72,7 @@ services:
             MB_DB_PASS: ${METABASE_DB_PASS}
             MB_DB_DBNAME: ${METABASE_DB_NAME}
         volumes:
-            - metabase_data:/dev/random:ro
+            - /dev/urandom:/dev/random:ro
         expose:
             - '3000'
         depends_on:
@@ -89,8 +89,6 @@ volumes:
         name: mongo_data
     mongo_config:
         name: mongo_config
-    metabase_data:
-        name: metabase_data
     mb_db_data:
         name: mb_db_data
 

@@ -42,7 +42,7 @@ services:
             - npm_net
     # ---------------- Portainer ----------------
     portainer:
-        image: portainer/portainer-ce:2.33.0
+        image: portainer/portainer-ce:2.33.2
         container_name: Portainer
         restart: always
         volumes:

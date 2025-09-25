@@ -42,8 +42,7 @@ services:
             retries: 5
         networks:
             - db_net
-
-    # ---------------- Metabase ----------------
+    # ---------- PostgreSQL for Metabase ----------
     metabase_db:
         image: postgres:16.3
         container_name: MB_PostgreSQL
@@ -51,41 +50,43 @@ services:
             POSTGRES_USER: ${METABASE_DB_USER}
             POSTGRES_PASSWORD: ${METABASE_DB_PASS}
             POSTGRES_DB: ${METABASE_DB_NAME}
+        volumes:
+            - mb_db_data:/var/lib/postgresql/data
         healthcheck:
             test: ['CMD-SHELL', 'pg_isready -d ${METABASE_DB_NAME} -U ${METABASE_DB_USER}']
             interval: 10s
             timeout: 5s
             retries: 5
-        volumes:
-            - mb_db_data:/var/lib/postgresql/data
         networks:
             - mb_net
 
+    # ---------- Metabase ----------
     metabase:
         image: metabase/metabase:v0.52.7
         container_name: Metabase
         restart: unless-stopped
         environment:
+            MB_DB_TYPE: postgres
             MB_DB_HOST: metabase_db
             MB_DB_PORT: 5432
             MB_DB_USER: ${METABASE_DB_USER}
             MB_DB_PASS: ${METABASE_DB_PASS}
             MB_DB_DBNAME: ${METABASE_DB_NAME}
+        depends_on:
+            - metabase_db
+        volumes:
+            - mb_app_data:/metabase.db
         healthcheck:
             test: curl --fail -I http://localhost:3000/api/health || exit 1
             interval: 15s
             timeout: 5s
             retries: 5
-        volumes:
-            - /dev/urandom:/dev/random:ro
-        expose:
-            - '3000'
-        depends_on:
-            - metabase_db
         networks:
             - mb_net
             - npm_net
             - db_net
+        expose:
+            - '3000'
 
 volumes:
     pgsql_data:
@@ -96,6 +97,8 @@ volumes:
         name: mongo_config
     mb_db_data:
         name: mb_db_data
+    mb_app_data:
+        name: mb_app_data
 
 networks:
     npm_net:

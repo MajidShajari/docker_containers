@@ -52,8 +52,8 @@ jobs:
                   git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
-                  docker compose up -d
-                  docker system prune -af --volumes
+                  docker compose up -d --remove-orphans
+                  docker system prune -af
                   EOF
 
     deploy-database:
@@ -78,8 +78,8 @@ jobs:
                   git pull origin master || git pull origin main || echo "No new commits to pull"
                   docker compose pull
                   docker compose down
-                  docker compose up -d
-                  docker system prune -af --volumes
+                  docker compose up -d --remove-orphans
+                  docker system prune -af
                   EOF
 
     deploy-n8n:
@@ -109,6 +109,6 @@ jobs:
                   echo "Waiting 15 seconds for database to be ready..."
                   sleep 15
 
-                  docker compose up -d
-                  docker system prune -af --volumes
+                  docker compose up -d --remove-orphans
+                  docker system prune -af
                   EOF

@@ -72,7 +72,7 @@ services:
             MB_DB_PASS: ${METABASE_DB_PASS}
             MB_DB_DBNAME: ${METABASE_DB_NAME}
         volumes:
-            - metabase_data:/metabase-data
+            - metabase_data:/dev/random:ro
         expose:
             - '3000'
         depends_on:

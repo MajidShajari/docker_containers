@@ -53,7 +53,7 @@ jobs:
                   docker compose pull
                   docker compose down
                   docker compose up -d --remove-orphans
-                  docker system prune -af
+                  docker system prune -af --volumes
                   EOF
 
     deploy-database:
@@ -79,7 +79,7 @@ jobs:
                   docker compose pull
                   docker compose down
                   docker compose up -d --remove-orphans
-                  docker system prune -af
+                  docker system prune -af --volumes
                   EOF
 
     deploy-n8n:
@@ -110,5 +110,5 @@ jobs:
                   sleep 15
 
                   docker compose up -d --remove-orphans
-                  docker system prune -af
+                  docker system prune -af --volumes
                   EOF

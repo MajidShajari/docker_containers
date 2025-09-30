@@ -18,7 +18,6 @@ services:
             retries: 5
         networks:
             - db_net
-            - npm_net
 
     # ---------------- MongoDB ----------------
     mongo:
@@ -43,7 +42,6 @@ services:
             retries: 5
         networks:
             - db_net
-            - npm_net
     # ---------- PostgreSQL for Metabase ----------
     metabase_db:
         image: postgres:16.3

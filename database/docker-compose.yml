@@ -50,6 +50,7 @@ services:
     metabase_db:
         image: postgres:16.3
         container_name: MB_PostgreSQL
+        restart: unless-stopped
         environment:
             POSTGRES_USER: ${METABASE_DB_USER}
             POSTGRES_PASSWORD: ${METABASE_DB_PASS}

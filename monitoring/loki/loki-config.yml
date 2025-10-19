@@ -17,6 +17,7 @@ common:
         instance_addr: 127.0.0.1
         kvstore:
             store: inmemory
+        zone: 'zone1'
 
 schema_config:
     configs:
@@ -54,6 +55,7 @@ ingester:
             kvstore:
                 store: inmemory
             replication_factor: 1
+            zone: 'zone1'
         final_sleep: 0s
 
 ruler:

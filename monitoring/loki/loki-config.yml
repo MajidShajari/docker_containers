@@ -1,0 +1,72 @@
+auth_enabled: false # Only development can be restricted in production.
+
+server:
+    http_listen_port: 3100
+    grpc_listen_port: 9096
+    log_level: info
+
+# --------------------------------
+# Storage (persistent)
+# --------------------------------
+storage_config:
+    tsdb_shipper:
+        active_index_directory: /loki/index
+        cache_location: /loki/cache
+        shared_store: filesystem
+
+    filesystem:
+        directory: /loki/chunks
+
+# --------------------------------
+# Schema
+# --------------------------------
+schema_config:
+    configs:
+        - from: 2022-01-01
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+              prefix: loki_index_
+              period: 24h
+
+# --------------------------------
+# Limits
+# --------------------------------
+limits_config:
+    retention_period: 720h # 30 Days
+    max_streams_per_user: 5000
+    max_entries_limit_per_query: 500000
+
+chunk_store_config:
+    max_look_back_period: 720h
+
+query_range:
+    parallelise_shardable_queries: true
+
+# --------------------------------
+# Ruler (Alerting)
+# --------------------------------
+ruler:
+    storage:
+        type: local
+        local:
+            directory: /loki/rules
+    rule_path: /loki/rules-temp
+    alertmanager_url: http://alertmanager:9093
+    ring:
+        kvstore:
+            store: inmemory
+
+# --------------------------------
+# Ingester
+# --------------------------------
+ingester:
+    lifecycler:
+        ring:
+            kvstore:
+                store: inmemory
+            replication_factor: 1
+        final_sleep: 0s
+    chunk_idle_period: 10m
+    max_chunk_age: 1h

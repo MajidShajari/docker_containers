@@ -1,0 +1,21 @@
+{
+    "annotations": { "list": [] },
+    "panels": [
+        {
+            "title": "System & Container Logs",
+            "type": "logs",
+            "targets": [
+                {
+                    "expr": "{job=\"system\"} | logfmt",
+                    "refId": "A"
+                },
+                {
+                    "expr": "{job=\"docker-logs\"} | logfmt",
+                    "refId": "B"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 36,
+    "version": 1
+}

@@ -1,0 +1,33 @@
+groups:
+    - name: system-alerts
+      interval: 30s
+      rules:
+          # CPU usage > 80%
+          - alert: HighCPUUsage
+            expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+            for: 2m
+            labels:
+                severity: warning
+            annotations:
+                summary: 'High CPU usage on {{ $labels.instance }}'
+                description: 'CPU usage > 80% for more than 2 minutes.'
+
+          # Memory usage > 80%
+          - alert: HighMemoryUsage
+            expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
+            for: 2m
+            labels:
+                severity: warning
+            annotations:
+                summary: 'High Memory usage on {{ $labels.instance }}'
+                description: 'Memory usage > 80% for more than 2 minutes.'
+
+          # FastAPI HTTP error rate > 5%
+          - alert: HighErrorRate
+            expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+            for: 2m
+            labels:
+                severity: critical
+            annotations:
+                summary: 'High HTTP error rate on FastAPI'
+                description: 'More than 5% of requests returned 5xx in the last 5 minutes.'

@@ -1,0 +1,27 @@
+global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+    scrape_timeout: 10s
+
+# ---------------- Scrape Targets ----------------
+scrape_configs:
+    # Prometheus the service itself
+    - job_name: 'prometheus'
+      static_configs:
+          - targets: ['localhost:9090']
+
+    # Node Exporter - system metrics
+    - job_name: 'node-exporter'
+      static_configs:
+          - targets: ['node-exporter:9100']
+
+    # FastAPI / Custom App
+    - job_name: 'fastapi-app'
+      metrics_path: /metrics
+      static_configs:
+          - targets: ['fastapi:8000'] # Service name within the Docker network
+
+    # cAdvisor (optional for container metrics)
+    - job_name: 'cadvisor'
+      static_configs:
+          - targets: ['cadvisor:8080'] # If you add cAdvisor

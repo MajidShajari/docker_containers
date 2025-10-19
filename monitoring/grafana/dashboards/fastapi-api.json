@@ -1,0 +1,40 @@
+{
+    "annotations": { "list": [] },
+    "panels": [
+        {
+            "title": "Request Rate",
+            "type": "graph",
+            "targets": [
+                {
+                    "expr": "rate(http_requests_total[5m])",
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ]
+        },
+        {
+            "title": "HTTP 5xx Rate",
+            "type": "graph",
+            "targets": [
+                {
+                    "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+                    "legendFormat": "{{handler}}",
+                    "refId": "B"
+                }
+            ]
+        },
+        {
+            "title": "Request Duration",
+            "type": "graph",
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, handler))",
+                    "legendFormat": "{{handler}}",
+                    "refId": "C"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 36,
+    "version": 1
+}

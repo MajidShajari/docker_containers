@@ -12,7 +12,7 @@
     "panels": [
         {
             "title": "CPU Usage",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "100 - (avg by(instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
@@ -23,7 +23,7 @@
         },
         {
             "title": "Memory Usage",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",

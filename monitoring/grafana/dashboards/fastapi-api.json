@@ -10,7 +10,7 @@
     "panels": [
         {
             "title": "Request Rate",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "rate(http_requests_total[5m])",
@@ -21,7 +21,7 @@
         },
         {
             "title": "HTTP 5xx Rate",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
@@ -32,7 +32,7 @@
         },
         {
             "title": "Request Duration",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, handler))",

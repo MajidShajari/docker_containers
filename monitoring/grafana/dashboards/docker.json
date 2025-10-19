@@ -6,11 +6,10 @@
     "timezone": "browser",
     "schemaVersion": 36,
     "version": 1,
-    "annotations": { "list": [] },
     "panels": [
         {
             "title": "Container CPU Usage",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "rate(container_cpu_usage_seconds_total[5m])",
@@ -21,7 +20,7 @@
         },
         {
             "title": "Container Memory Usage",
-            "type": "graph",
+            "type": "timeseries",
             "targets": [
                 {
                     "expr": "container_memory_usage_bytes",

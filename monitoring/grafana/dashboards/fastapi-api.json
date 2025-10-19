@@ -1,4 +1,11 @@
 {
+    "id": null,
+    "uid": "fastapi-api-dashboard",
+    "title": "FastAPI API Metrics",
+    "tags": ["fastapi", "api", "monitoring"],
+    "timezone": "browser",
+    "schemaVersion": 36,
+    "version": 1,
     "annotations": { "list": [] },
     "panels": [
         {
@@ -34,7 +41,5 @@
                 }
             ]
         }
-    ],
-    "schemaVersion": 36,
-    "version": 1
+    ]
 }

@@ -1,4 +1,11 @@
 {
+    "id": null,
+    "uid": "docker-dashboard",
+    "title": "Docker Containers Metrics",
+    "tags": ["docker", "monitoring"],
+    "timezone": "browser",
+    "schemaVersion": 36,
+    "version": 1,
     "annotations": { "list": [] },
     "panels": [
         {
@@ -23,7 +30,5 @@
                 }
             ]
         }
-    ],
-    "schemaVersion": 36,
-    "version": 1
+    ]
 }

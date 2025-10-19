@@ -53,55 +53,9 @@ services:
         networks:
             - npm_net
 
-    # ---------------- Grafana ----------------
-    grafana:
-        image: grafana/grafana:11.2.0
-        container_name: Grafana
-        restart: unless-stopped
-        user: '1000'
-        environment:
-            - GF_SERVER_ROOT_URL=https://grafana.${DOMAIN_NAME}
-        networks:
-            - npm_net
-            - loki_net
-        volumes:
-            - grafana_data:/var/lib/grafana
-        expose:
-            - '3000'
-
-    # ---------------- Loki ----------------
-    loki:
-        image: grafana/loki:3.1.1
-        container_name: Loki
-        restart: unless-stopped
-        volumes:
-            - ./loki:/etc/loki
-        expose:
-            - '3100'
-        command: -config.file=/etc/loki/loki-config.yml
-        networks:
-            - loki_net
-
-    # ---------------- Promtail ----------------
-    promtail:
-        image: grafana/promtail:3.1.1
-        container_name: Promtail
-        restart: unless-stopped
-        volumes:
-            - /var/log:/var/log
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./promtail:/etc/promtail
-        command: -config.file=/etc/promtail/promtail-config.yml
-        networks:
-            - loki_net
-
 networks:
     npm_net:
         name: npm_net
-    loki_net:
-        name: loki_net
-        internal: true
-
 volumes:
     npm_data:
         name: npm_data
@@ -111,5 +65,3 @@ volumes:
         name: npm_db_data
     portainer_data:
         name: portainer_data
-    grafana_data:
-        name: grafana_data

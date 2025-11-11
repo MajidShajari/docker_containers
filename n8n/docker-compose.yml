@@ -25,7 +25,7 @@ x-shared: &shared
 
 services:
     postgres:
-        image: postgres:16.3
+        image: postgres:16
         restart: always
         environment:
             - POSTGRES_USER=${POSTGRES_USER}
@@ -45,7 +45,7 @@ services:
             - n8n_net
 
     redis:
-        image: redis:6.2-alpine
+        image: redis:6-alpine
         restart: always
         volumes:
             - redis_storage:/data

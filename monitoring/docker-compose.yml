@@ -1,7 +1,7 @@
 services:
     # ---------------- Grafana ----------------
     grafana:
-        image: grafana/grafana:11.2.0
+        image: grafana/grafana:12.3.0
         container_name: Grafana
         restart: unless-stopped
         user: '1000'
@@ -20,7 +20,7 @@ services:
 
     # ---------------- Loki ----------------
     loki:
-        image: grafana/loki:3.1.1
+        image: grafana/loki:3.4
         container_name: Loki
         restart: unless-stopped
         networks:

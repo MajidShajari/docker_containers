@@ -13,7 +13,6 @@ jobs:
             main: ${{ steps.changes.outputs.main }}
             database: ${{ steps.changes.outputs.database }}
             n8n: ${{ steps.changes.outputs.n8n }}
-            monitoring: ${{ steps.changes.outputs.monitoring}}
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -28,8 +27,6 @@ jobs:
                           - 'database/**'
                       n8n:
                           - 'n8n/**'
-                      monitoring:
-                          - 'monitoring/**'
 
     deploy-main:
         needs: detect-changes
@@ -57,31 +54,31 @@ jobs:
                   docker system prune -af
                   EOF
 
-    deploy-monitoring:
-        needs: detect-changes
-        if: needs.detect-changes.outputs.monitoring == 'true'
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    # deploy-monitoring:
+    #     needs: detect-changes
+    #     if: needs.detect-changes.outputs.monitoring == 'true'
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout code
+    #           uses: actions/checkout@v4
 
-            - name: Set up SSH
-              uses: webfactory/ssh-agent@v0.9.0
-              with:
-                  ssh-private-key: ${{ secrets.SSH_KEY }}
+    #         - name: Set up SSH
+    #           uses: webfactory/ssh-agent@v0.9.0
+    #           with:
+    #               ssh-private-key: ${{ secrets.SSH_KEY }}
 
-            - name: Deploy monitoring container
-              run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-                  set -e
-                  cd ~/docker_containers/monitoring
-                  git reset --hard
-                  git pull origin master || git pull origin main || echo "No new commits to pull"
-                  docker compose pull
-                  docker compose down
-                  docker compose up -d --remove-orphans
-                  docker system prune -af
-                  EOF
+    #         - name: Deploy monitoring container
+    #           run: |
+    #               ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+    #               set -e
+    #               cd ~/docker_containers/monitoring
+    #               git reset --hard
+    #               git pull origin master || git pull origin main || echo "No new commits to pull"
+    #               docker compose pull
+    #               docker compose down
+    #               docker compose up -d --remove-orphans
+    #               docker system prune -af
+    #               EOF
 
     deploy-database:
         needs: detect-changes

@@ -67,7 +67,7 @@ services:
 
     # ---------- Metabase ----------
     metabase:
-        image: metabase/metabase:v0.52.7
+        image: metabase/metabase:v0.57.5
         container_name: Metabase
         restart: unless-stopped
         environment:
